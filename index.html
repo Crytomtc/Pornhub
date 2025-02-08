@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Links</title>
+    <link rel="icon" href="https://www.pornhub.com/favicon.ico">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            color: yellow;
+            font-size: 36px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #222;
+            border-radius: 10px;
+        }
+        .link-box {
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #333;
+            border-radius: 5px;
+        }
+        .link-box a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .link-box a:hover {
+            text-decoration: underline;
+        }
+        hr {
+            border: 1px solid #444;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Lista de Links</h1>
+    <div class="container" id="link-container">
+        Cargando...
+    </div>
+
+    <script>
+        async function cargarLinks() {
+            try {
+                const response = await fetch('links.txt');
+                const text = await response.text();
+                const lineas = text.split("\n").map(linea => linea.trim()).filter(linea => linea);
+
+                const contenedor = document.getElementById("link-container");
+                contenedor.innerHTML = "";
+
+                for (let i = 0; i < lineas.length; i += 2) {
+                    const nombre = lineas[i] || "Sin Nombre";
+                    const enlace = lineas[i + 1] || "#";
+
+                    const div = document.createElement("div");
+                    div.className = "link-box";
+                    div.innerHTML = `<strong>${nombre}</strong><br><a href="https://${enlace}" target="_blank">${enlace}</a>`;
+
+                    contenedor.appendChild(div);
+                    contenedor.appendChild(document.createElement("hr"));
+                }
+            } catch (error) {
+                document.getElementById("link-container").innerText = "Error al cargar el archivo.";
+            }
+        }
+
+        cargarLinks();
+    </script>
+
+</body>
+  </html>
+  
